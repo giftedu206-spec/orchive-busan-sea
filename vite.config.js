@@ -7,6 +7,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
+    // GitHub Pages serves this repository below /orchive-busan-sea/.
+    base: process.env.GITHUB_ACTIONS ? '/orchive-busan-sea/' : '/',
     plugins: [
       react(),
       {
