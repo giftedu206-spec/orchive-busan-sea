@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     const prompt = `당신은 부산 해양 생물 전문가입니다. 사진 속 생물을 분석하세요. 발견 위치: ${place || '미입력'}.
 반드시 JSON 객체만 반환하세요. 불확실하면 name을 식별 중인 해양 생물로 하세요. danger는 1~5 정수입니다.
 {"name":"한국어 생물 이름","latin":"학명 또는 추정 학명","type":"위험 생물|해파리|연체동물|어류|기타","danger":1,"note":"사진 근거를 짧게 설명","confidence":70}`;
-    const apiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, {
+    const apiResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${encodeURIComponent(process.env.GEMINI_API_KEY)}`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: mimeType, data } }] }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2 } })
     });
