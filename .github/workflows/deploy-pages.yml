@@ -27,7 +27,7 @@ jobs:
           version: 11.16.0
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
       - run: pnpm install --frozen-lockfile
       - run: pnpm run build
       - uses: actions/configure-pages@v5
