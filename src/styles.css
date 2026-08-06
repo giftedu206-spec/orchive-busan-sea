@@ -36,3 +36,6 @@ nav button:nth-child(3) span{background:linear-gradient(145deg,#075bd9,#18a9e0);
 .marker{background:linear-gradient(145deg,#fff,#e9f8ff);transition:transform .18s}.marker:hover{transform:scale(1.12)}
 .book-card{background:linear-gradient(135deg,#fff,#f7fcff)}
 .myhero{background:linear-gradient(145deg,#e0f7ff,#fff 62%,#edf7ff)}
+
+/* 실제 OpenStreetMap 지도 */
+.map-wrap{margin:0 -20px;position:relative;overflow:hidden;background:#e4f5ff}.real-map{height:440px;width:100%;z-index:1}.map-help{margin:0;background:#ecf8ff;color:#276ea7;text-align:center;font-size:12px;padding:10px 16px}.beach-label{border:0!important;border-radius:10px!important;background:#ffffffeb!important;color:#17426f!important;font:800 11px Nunito,'Noto Sans KR',sans-serif!important;padding:4px 7px!important;box-shadow:0 3px 10px #164a6f33!important}.leaflet-popup-content-wrapper{border-radius:14px!important;font-family:Nunito,'Noto Sans KR',sans-serif}.leaflet-popup-content{margin:12px 15px!important}.map-popup{min-width:125px;color:#173e70}.map-popup b,.map-popup small{display:block}.map-popup small{margin:3px 0}.map-wrap .leaflet-control-zoom a{color:#1767c4}

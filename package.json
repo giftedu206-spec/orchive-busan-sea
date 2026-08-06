@@ -1,6 +1,17 @@
 {
   "type": "module",
-  "scripts": { "dev": "vite", "build": "vite build" },
-  "dependencies": { "@vitejs/plugin-react": "4.3.4", "vite": "5.4.19", "react": "18.3.1", "react-dom": "18.3.1", "@google/genai": "latest", "firebase": "latest" },
-  "devDependencies": {}
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@google/genai": "latest",
+    "@vitejs/plugin-react": "4.3.4",
+    "firebase": "latest",
+    "leaflet": "1.9.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-leaflet": "4.2.1",
+    "vite": "5.4.19"
+  }
 }
