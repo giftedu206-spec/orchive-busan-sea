@@ -119,6 +119,7 @@ function App(){
   useEffect(()=>{if(cloudUser&&cloudReady)saveCloudData(cloudUser,{profile,discoveries,likes,dislikes,comments}).catch(error=>console.warn('Firebase 저장 실패',error))},[cloudUser,cloudReady,profile,discoveries,likes,dislikes,comments]);
   useEffect(()=>firebaseEnabled?subscribePublicDiscoveries(setPublicDiscoveries):undefined,[]);
   useEffect(()=>cloudUser?subscribeFriendships(cloudUser,setFriendRequests):undefined,[cloudUser]);
+  useEffect(()=>{if(page!=='home')return;const list=document.querySelector('.safety-quiz');const choices=list?.querySelectorAll('.quiz-choice');if(!choices?.length)return;[...choices].sort(()=>Math.random()-.5).forEach(button=>list.appendChild(button))},[page,profile.quizCount,profile.quizDay]);
   const registerDiscovery=async()=>{
     const analysis=draft.analysis;
     if (!analysis || analysis.isMarine===false) return;
