@@ -24,6 +24,7 @@ const beaches = [
   { name: '일광해수욕장', shortName: '일광', position: [35.2611, 129.2337], species:'해파리 · 꽃게 · 숭어' },
   { name: '임랑해수욕장', shortName: '임랑', position: [35.3214, 129.2677], species:'성게 · 소라 · 망상어' },
   { name: '다대포해수욕장', shortName: '다대포', position: [35.0482, 128.9660], species:'짱뚱어 · 농어 · 칠게' }
+  ,{ name: '송도해수욕장', shortName: '송도', position: [35.0766, 129.0179], species:'불가사리 · 성게 · 망둥어' }
 ];
 const getPlacePosition = (place = '') => beaches.find(beach => place.includes(beach.shortName))?.position || beaches[0].position;
 function MoveMap({position}) { const map=useMap(); useEffect(()=>{if(position) map.flyTo(position,15,{duration:.8})},[map,position]); return null; }
