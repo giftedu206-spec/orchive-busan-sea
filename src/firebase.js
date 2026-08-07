@@ -1,5 +1,5 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getAuth, signInAnonymously } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { addDoc, collection, doc, getDoc, getFirestore, limit, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
 
 // Firebase 웹 설정값은 공개 식별자이며, 실제 데이터 보호는 Firestore 보안 규칙으로 합니다.
@@ -17,11 +17,27 @@ const app = firebaseEnabled ? (getApps()[0] || initializeApp(config)) : null;
 const auth = app ? getAuth(app) : null;
 const db = app ? getFirestore(app) : null;
 
-export async function connectFirebase() {
-  if (!firebaseEnabled) return null;
-  const credential = await signInAnonymously(auth);
+const accountEmail = username => `${username.trim().toLowerCase()}@orchive.app`;
+
+// 아이디만 입력하는 것처럼 보이도록 내부적으로만 안전한 이메일 형식으로 바꿉니다.
+export async function signUpWithId(username, password) {
+  if (!firebaseEnabled) throw new Error('Firebase 설정이 필요합니다.');
+  const credential = await createUserWithEmailAndPassword(auth, accountEmail(username), password);
   return credential.user.uid;
 }
+
+export async function signInWithId(username, password) {
+  if (!firebaseEnabled) throw new Error('Firebase 설정이 필요합니다.');
+  const credential = await signInWithEmailAndPassword(auth, accountEmail(username), password);
+  return credential.user.uid;
+}
+
+export function watchAuth(callback) {
+  if (!firebaseEnabled) { callback(null); return () => {}; }
+  return onAuthStateChanged(auth, user => callback(user));
+}
+
+export async function signOutUser() { if (auth) await signOut(auth); }
 
 export async function loadCloudData(uid) {
   const snapshot = await getDoc(doc(db, 'orchiveUsers', uid));
