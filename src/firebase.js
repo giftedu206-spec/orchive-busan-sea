@@ -64,6 +64,7 @@ export async function publishDiscovery(uid, item, imageData) {
 
 export function subscribePublicDiscoveries(callback) {
   if (!firebaseEnabled) return () => {};
-  const latest = query(collection(db, 'publicDiscoveries'), orderBy('createdAt', 'desc'), limit(50));
+  // 시민이 공유한 최신 기록을 넉넉히 보여 주되, 무료 Firestore 읽기 사용량도 고려합니다.
+  const latest = query(collection(db, 'publicDiscoveries'), orderBy('createdAt', 'desc'), limit(100));
   return onSnapshot(latest, snapshot => callback(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))));
 }
