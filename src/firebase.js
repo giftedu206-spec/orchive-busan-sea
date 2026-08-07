@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { addDoc, collection, doc, getDoc, getFirestore, limit, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, getFirestore, limit, onSnapshot, orderBy, query, setDoc, where } from 'firebase/firestore';
 
 // Firebase 웹 설정값은 공개 식별자이며, 실제 데이터 보호는 Firestore 보안 규칙으로 합니다.
 const config = {
@@ -86,4 +86,26 @@ export function subscribePublicDiscoveries(callback) {
   // 시민이 공유한 최신 기록을 넉넉히 보여 주되, 무료 Firestore 읽기 사용량도 고려합니다.
   const latest = query(collection(db, 'publicDiscoveries'), orderBy('createdAt', 'desc'), limit(100));
   return onSnapshot(latest, snapshot => callback(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))));
+}
+
+const conversationId = (first, second) => [first, second].sort().join('_');
+
+export async function sendFriendRequest(from, to, senderName) {
+  if (!db || !from || !to || from === to) return;
+  await setDoc(doc(db, 'friendRequests', `${from}_${to}`), {
+    from, to, senderName, status: 'pending', createdAt: Date.now()
+  });
+}
+
+export async function sendDirectMessage(from, to, text) {
+  if (!db || !from || !to || !text.trim()) return;
+  const id = conversationId(from, to);
+  await setDoc(doc(db, 'conversations', id), { participants: [from, to], updatedAt: Date.now() }, { merge: true });
+  await addDoc(collection(db, 'conversations', id, 'messages'), { from, text: text.trim(), createdAt: Date.now() });
+}
+
+export function subscribeDirectMessages(first, second, callback) {
+  if (!db || !first || !second) return () => {};
+  const id = conversationId(first, second);
+  return onSnapshot(query(collection(db, 'conversations', id, 'messages'), orderBy('createdAt', 'asc'), limit(100)), snapshot => callback(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))));
 }
