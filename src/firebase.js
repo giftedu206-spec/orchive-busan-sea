@@ -18,17 +18,20 @@ const auth = app ? getAuth(app) : null;
 const db = app ? getFirestore(app) : null;
 
 const accountEmail = username => `${username.trim().toLowerCase()}@orchive.app`;
+// Firebase는 최소 6자 비밀번호를 요구하므로, 사용자가 정한 4자리 PIN 앞에
+// 앱 내부 문자열을 붙여 안전하게 인증 요청을 만듭니다.
+const accountPassword = pin => `orchive-pin-${pin}`;
 
 // 아이디만 입력하는 것처럼 보이도록 내부적으로만 안전한 이메일 형식으로 바꿉니다.
 export async function signUpWithId(username, password) {
   if (!firebaseEnabled) throw new Error('Firebase 설정이 필요합니다.');
-  const credential = await createUserWithEmailAndPassword(auth, accountEmail(username), password);
+  const credential = await createUserWithEmailAndPassword(auth, accountEmail(username), accountPassword(password));
   return credential.user.uid;
 }
 
 export async function signInWithId(username, password) {
   if (!firebaseEnabled) throw new Error('Firebase 설정이 필요합니다.');
-  const credential = await signInWithEmailAndPassword(auth, accountEmail(username), password);
+  const credential = await signInWithEmailAndPassword(auth, accountEmail(username), accountPassword(password));
   return credential.user.uid;
 }
 
