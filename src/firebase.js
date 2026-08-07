@@ -97,6 +97,16 @@ export async function sendFriendRequest(from, to, senderName) {
   });
 }
 
+export function subscribeIncomingFriendRequests(uid, callback) {
+  if (!db || !uid) return () => {};
+  return onSnapshot(query(collection(db, 'friendRequests'), where('to', '==', uid)), snapshot => callback(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))));
+}
+
+export async function acceptFriendRequest(requestId) {
+  if (!db || !requestId) return;
+  await setDoc(doc(db, 'friendRequests', requestId), { status: 'accepted', acceptedAt: Date.now() }, { merge: true });
+}
+
 export async function sendDirectMessage(from, to, text) {
   if (!db || !from || !to || !text.trim()) return;
   const id = conversationId(from, to);
