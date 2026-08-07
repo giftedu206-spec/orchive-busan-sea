@@ -1,0 +1,13 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="o" x1="15" y1="5" x2="165" y2="175" gradientUnits="userSpaceOnUse"><stop stop-color="#4DE0E7"/><stop offset=".55" stop-color="#1279D5"/><stop offset="1" stop-color="#083D86"/></linearGradient>
+    <linearGradient id="c" x1="55" y1="50" x2="126" y2="145" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB15B"/><stop offset="1" stop-color="#FF5C7A"/></linearGradient>
+  </defs>
+  <circle cx="90" cy="90" r="87" fill="url(#o)"/>
+  <circle cx="38" cy="36" r="20" fill="#B8FAF3" fill-opacity=".5"/>
+  <path d="M15 130C44 112 55 126 78 113C99 101 119 112 165 90V180H15V130Z" fill="#0752AD" fill-opacity=".65"/>
+  <path d="M72 153C72 127 67 112 56 101M72 143C87 128 93 113 92 94M82 156C96 142 111 132 130 128M59 151C52 136 39 128 28 126M89 151C107 144 121 148 138 157" stroke="url(#c)" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="56" cy="101" r="7" fill="#FFD37B"/><circle cx="92" cy="94" r="7" fill="#FFD37B"/><circle cx="130" cy="128" r="7" fill="#FFD37B"/>
+  <path d="M122 50C130 40 145 44 149 55C153 66 142 75 132 71C123 67 117 59 122 50Z" fill="#E4FFFF" fill-opacity=".9"/>
+  <circle cx="90" cy="90" r="86" stroke="#E6FEFF" stroke-width="4"/>
+</svg>
