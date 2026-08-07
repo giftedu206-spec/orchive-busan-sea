@@ -102,9 +102,26 @@ export function subscribeIncomingFriendRequests(uid, callback) {
   return onSnapshot(query(collection(db, 'friendRequests'), where('to', '==', uid)), snapshot => callback(snapshot.docs.map(item => ({ id: item.id, ...item.data() }))));
 }
 
+export function subscribeFriendships(uid, callback) {
+  if (!db || !uid) return () => {};
+  let incoming = [], outgoing = [];
+  const emit = () => callback([...incoming, ...outgoing.filter(item => !incoming.some(other => other.id === item.id))]);
+  const stopIncoming = onSnapshot(query(collection(db, 'friendRequests'), where('to', '==', uid)), snapshot => { incoming=snapshot.docs.map(item => ({ id:item.id, ...item.data() })); emit(); });
+  const stopOutgoing = onSnapshot(query(collection(db, 'friendRequests'), where('from', '==', uid)), snapshot => { outgoing=snapshot.docs.map(item => ({ id:item.id, ...item.data() })); emit(); });
+  return () => { stopIncoming(); stopOutgoing(); };
+}
+
 export async function acceptFriendRequest(requestId) {
   if (!db || !requestId) return;
   await setDoc(doc(db, 'friendRequests', requestId), { status: 'accepted', acceptedAt: Date.now() }, { merge: true });
+}
+
+export async function getFriendship(first, second) {
+  if (!db || !first || !second) return null;
+  const direct = await getDoc(doc(db, 'friendRequests', `${first}_${second}`));
+  if (direct.exists()) return direct.data();
+  const reverse = await getDoc(doc(db, 'friendRequests', `${second}_${first}`));
+  return reverse.exists() ? reverse.data() : null;
 }
 
 export async function sendDirectMessage(from, to, text) {
